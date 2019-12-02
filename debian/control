@@ -1,0 +1,29 @@
+Source: imx-vpu-hantro
+Priority: extra
+Maintainer: Josua Mayer <josua@solid-run.com>
+Build-Depends:
+ debhelper (>= 9),
+ imx-kernel-api,
+Standards-Version: 3.9.3
+Section: libs
+Vcs-Git: https://github.com/SolidRun/pkg-imx-vpu.git
+Vcs-Browser: https://github.com/SolidRun/pkg-imx-vpu
+
+Package: imx-vpu-hantro
+Section: libs
+Architecture: arm64
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ imx-gpu-viv-fb | imx-gpu-viv-wl | imx-gpu-viv-x11,
+Description: Hantro VPU library
+ low-level library for accessing the Hantro VPU used in NXP i.MX8 SoCs.
+
+Package: imx-vpu-hantro-dev
+Section: libdevel
+Architecture: all
+Depends:
+ ${misc:Depends},
+ imx-vpu-hantro (= ${binary:Version}),
+Description: Development files for imx-vpu-hantro
+ Provides libraries and headers to create programs with the Hantro VPU in i.MX8 SoCs.

@@ -1,0 +1,70 @@
+#!/usr/bin/make -f
+
+# set destdir
+DESTDIR=$(CURDIR)/debian/tmp
+
+# declare path to kernel headers
+IMX_KERNEL_HEADERS = $(shell find /usr/include -maxdepth 1 -iname "kernel-*imx*" -type d | sort | tail -1)
+export IMX_KERNEL_HEADERS
+
+# hack: will only work on OBS-created chroots
+SOURCESDIR=/usr/src/packages/SOURCES/ ~
+
+NAME=imx-vpu-hantro-1.11.0
+MD5=51b811f9523d03ca87f611ba86594311
+
+%:
+	dh $@ --sourcedirectory=$(NAME)
+
+build:
+	find $(SOURCESDIR) -maxdepth 1 -iname "$(NAME).bin" -exec cp -v {} ./ \; -quit || true
+	./fetch.sh $(NAME).bin $(MD5)
+	chmod +x $(NAME).bin
+	./$(NAME).bin --auto-accept --force
+	patch -p0 < debian/patches/fix-include.patch
+	dh $@
+
+clean:
+	rm -rf $(NAME) $(NAME).bin
+	dh $@
+
+override_dh_auto_build:
+	make -C $(NAME) -f Makefile_G1G2
+	make -C $(NAME) -f Makefile_H1
+
+override_dh_auto_install:
+	cd $(NAME)
+	install -v -m755 -d $(DESTDIR)/usr/include/hantro_dec
+	install -v -m755 -d $(DESTDIR)/usr/include/hantro_enc/encoder
+	install -v -m755 -d $(DESTDIR)/usr/include/hantro_enc/headers
+	install -v -m755 -d $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+
+	# i.MX8MQ (decoder)
+	install -v -m644 $(NAME)/decoder_sw/software/source/inc/*.h		$(DESTDIR)/usr/include/hantro_dec
+	install -v -m644 $(NAME)/openmax_il/headers/*.h				$(DESTDIR)/usr/include/hantro_dec
+	install -v -m644 $(NAME)/openmax_il/source/*.h				$(DESTDIR)/usr/include/hantro_dec
+	install -v -m644 $(NAME)/openmax_il/source/decoder/*.h			$(DESTDIR)/usr/include/hantro_dec
+	install -v -m644 $(NAME)/libcodec.so.1					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libcommon_g1.so.1				$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libg1.so.1					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libhantro.so.1					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	ln -sv libcodec.so.1							$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libcodec.so
+	ln -sv libcommon_g1.so.1						$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libcommon_g1.so
+	ln -sv libg1.so.1							$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libg1.so
+	ln -sv libhantro.so.1							$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libhantro.so
+	install -v -m644 $(NAME)/libcodec.a					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libg1.a					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libhantro.a					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+
+	# i.MX8MM (+encoder)
+	install -v -m644 $(NAME)/h1_encoder/software/inc/*.h			$(DESTDIR)/usr/include/hantro_enc
+	install -v -m644 $(NAME)/h1_encoder/software/linux_reference/ewl/*.h	$(DESTDIR)/usr/include/hantro_enc
+	install -v -m644 $(NAME)/openmax_il/source/encoder/*.h			$(DESTDIR)/usr/include/hantro_enc/encoder
+	install -v -m644 $(NAME)/openmax_il/source/*.h				$(DESTDIR)/usr/include/hantro_enc
+	install -v -m644 $(NAME)/openmax_il/headers/*.h				$(DESTDIR)/usr/include/hantro_enc/headers
+	install -v -m644 $(NAME)/libcodec_enc.so.1				$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libhantro_h1.so.1				$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	ln -sv libcodec_enc.so.1						$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libcodec_enc.so
+	ln -sv libhantro_h1.so.1						$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libhantro_h1.so
+	install -v -m644 $(NAME)/libcodec_enc.a					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
+	install -v -m644 $(NAME)/libhantro_h1.a					$(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
