@@ -22,6 +22,7 @@ build:
 	chmod +x $(NAME).bin
 	./$(NAME).bin --auto-accept --force
 	patch -p0 < debian/patches/fix-include.patch
+	cd $(NAME); patch -p1 < ../debian/patches/0001-decoder_sw-resolve-compilation-error-with-fcommon.patch
 	dh $@
 
 clean:
