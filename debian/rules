@@ -10,8 +10,8 @@ export IMX_KERNEL_HEADERS
 # hack: will only work on OBS-created chroots
 SOURCESDIR=/usr/src/packages/SOURCES/ ~
 
-NAME=imx-vpu-hantro-1.17.0
-MD5=f05d6d5fd3ee542a3293dea8c0702036
+NAME=imx-vpu-hantro-1.19.0
+MD5=05a2c37fddcabdadd5fa37d3a38914c6
 
 %:
 	dh $@ --sourcedirectory=$(NAME)

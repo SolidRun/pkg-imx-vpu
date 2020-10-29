@@ -1,6 +1,6 @@
-diff -Naur imx-vpu-hantro-1.17.0.orig/h1_encoder/software/linux_reference/Makefile imx-vpu-hantro-1.17.0/h1_encoder/software/linux_reference/Makefile
---- imx-vpu-hantro-1.17.0.orig/h1_encoder/software/linux_reference/Makefile	2020-03-03 13:24:30.000000000 +0000
-+++ imx-vpu-hantro-1.17.0/h1_encoder/software/linux_reference/Makefile	2020-04-14 14:06:22.171249374 +0000
+diff -Naur imx-vpu-hantro-1.19.0.orig/h1_encoder/software/linux_reference/Makefile imx-vpu-hantro-1.19.0/h1_encoder/software/linux_reference/Makefile
+--- imx-vpu-hantro-1.19.0.orig/h1_encoder/software/linux_reference/Makefile	2020-03-03 13:24:30.000000000 +0000
++++ imx-vpu-hantro-1.19.0/h1_encoder/software/linux_reference/Makefile	2020-04-14 14:06:22.171249374 +0000
 @@ -175,6 +175,10 @@
            $(DEBFLAGS) $(INCLUDE)
  CFLAGS += -Wsign-compare -Wmissing-field-initializers
@@ -12,9 +12,9 @@ diff -Naur imx-vpu-hantro-1.17.0.orig/h1_encoder/software/linux_reference/Makefi
  ifeq ($(USE_64BIT_ENV), y)
  CFLAGS += -DADDRESS_WIDTH_64
  endif
-diff -Naur imx-vpu-hantro-1.17.0.orig/Makefile_G1G2 imx-vpu-hantro-1.17.0/Makefile_G1G2
---- imx-vpu-hantro-1.17.0.orig/Makefile_G1G2	2020-03-03 13:24:30.000000000 +0000
-+++ imx-vpu-hantro-1.17.0/Makefile_G1G2	2020-04-14 14:09:58.574347365 +0000
+diff -Naur imx-vpu-hantro-1.19.0.orig/Makefile_G1G2 imx-vpu-hantro-1.19.0/Makefile_G1G2
+--- imx-vpu-hantro-1.19.0.orig/Makefile_G1G2	2020-03-03 13:24:30.000000000 +0000
++++ imx-vpu-hantro-1.19.0/Makefile_G1G2	2020-04-14 14:09:58.574347365 +0000
 @@ -11,7 +11,12 @@
  INCLUDE_HEADERS += -I$(SOURCE_ROOT)/linux/memalloc
  #INCLUDE_HEADERS += -I$(SOURCE_ROOT)/linux/ldriver
@@ -28,9 +28,9 @@ diff -Naur imx-vpu-hantro-1.17.0.orig/Makefile_G1G2 imx-vpu-hantro-1.17.0/Makefi
  
  CFLAGS += -DDEC_MODULE_PATH=\"/dev/mxc_hantro\" -DUSE_FAKE_RFC_TABLE -DFIFO_DATATYPE=void* -DNDEBUG -DDOWN_SCALER \
             -DUSE_EXTERNAL_BUFFER -DUSE_FAST_EC -DUSE_VP9_EC -DGET_FREE_BUFFER_NON_BLOCK \
-diff -Naur imx-vpu-hantro-1.17.0.orig/Makefile_H1 imx-vpu-hantro-1.17.0/Makefile_H1
---- imx-vpu-hantro-1.17.0.orig/Makefile_H1	2020-03-03 13:24:30.000000000 +0000
-+++ imx-vpu-hantro-1.17.0/Makefile_H1	2020-04-14 14:06:22.175249282 +0000
+diff -Naur imx-vpu-hantro-1.19.0.orig/Makefile_H1 imx-vpu-hantro-1.19.0/Makefile_H1
+--- imx-vpu-hantro-1.19.0.orig/Makefile_H1	2020-03-03 13:24:30.000000000 +0000
++++ imx-vpu-hantro-1.19.0/Makefile_H1	2020-04-14 14:06:22.175249282 +0000
 @@ -2,6 +2,9 @@
  AR = $(CROSS_COMPILE)ar
  CFLAGS ?= -O2
